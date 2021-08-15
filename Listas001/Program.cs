@@ -1,5 +1,7 @@
 ﻿using System;
-
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 namespace Listas001
 {
     class Program
@@ -7,7 +9,7 @@ namespace Listas001
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            Lista lis = new Lista();
+            Lista<int> lis = new Lista<int>();
             lis.Agregar(1);
             lis.InserAt(0,12);
             
@@ -19,10 +21,12 @@ namespace Listas001
             lis.InserAt(1,14);
             lis.InserAt(lis.Count-1,14);
 
+            List<int> datos = new List<int>();
             foreach (int dato in lis)
             {
                 Console.WriteLine(dato);
             }
+            
             
         }
     }

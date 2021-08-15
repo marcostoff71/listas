@@ -1,16 +1,22 @@
 ﻿using System;
 using System.Collections;
-
+using System.Collections.Generic;
+using System.Linq;
 namespace Listas001
 {
-    public class Lista:IEnumerable
+    public class Lista<T>:IEnumerable<T>
     {
         private Nodo list;
-        private EnumLista enu;
+      
+        public class Nodo
+        {
+            public T item { get; set; }
+            public Nodo siguiente { get; set; }
+        }
         public Lista()
         {
             list = null;
-            this.enu= new EnumLista(this);
+           
         }
 
         public int Count
@@ -27,7 +33,7 @@ namespace Listas001
             }
         }
 
-        public void Agregar(int pItem)
+        public void Agregar(T pItem)
         {
             Nodo nuevoNodo = new Nodo();
             nuevoNodo.item = pItem;
@@ -48,7 +54,7 @@ namespace Listas001
             }
         }
 
-        public void InserAt(int index, int pItem)
+        public void InserAt(int index, T pItem)
         {
             if (index < 0 || index >= Count)
             {
@@ -88,7 +94,7 @@ namespace Listas001
             }
         }
 
-        public void Eliminar(int pItem)
+        public void Eliminar(T pItem)
         {
             if (this.list != null)
             {
@@ -167,7 +173,7 @@ namespace Listas001
             }
         }
         
-        public int this[int index]
+        public T this[int index]
         {
             get
             {
@@ -182,23 +188,29 @@ namespace Listas001
             }
         }
 
-        public IEnumerator GetEnumerator()
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
             return GetEnumLista();
         }
 
-        public EnumLista GetEnumLista()
+        public EnumLista<T> GetEnumLista()
         {
-            return new EnumLista(this);
+            EnumLista<T> enumList = new EnumLista<T>(this);
+            return enumList;
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return GetEnumLista();
         }
     }
 
-    public class EnumLista : IEnumerator
+    public class EnumLista<T> : IEnumerator<T>
     {
 
-        private Lista _lista;
+        private Lista<T> _lista;
         private int index = -1;
-        public EnumLista(Lista pLista)
+        public EnumLista(Lista<T> pLista)
         {
             this._lista = pLista;
         }
@@ -214,12 +226,14 @@ namespace Listas001
             this.index = -1;
         }
 
-        public object Current => _lista[index];
+        object IEnumerator.Current => Current;
+
+        public T Current => _lista[index];
+        public void Dispose()
+        {
+            
+        }
     }
 
-    public class Nodo
-    {
-        public int item { get; set; }
-        public Nodo siguiente { get; set; }
-    }
+    
 }
